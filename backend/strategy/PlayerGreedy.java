@@ -1,5 +1,3 @@
-package ca.utoronto.utm.assignment1.othello;
-
 /**
  * PlayerGreedy makes a move by considering all possible moves that the player
  * can make. Each move leaves the player with a total number of tokens.
@@ -16,8 +14,7 @@ package ca.utoronto.utm.assignment1.othello;
  * the smaller column.
  * 
  * See the examples supplied in the assignment handout.
- * 
- * @author arnold
+ *
  *
  */
 

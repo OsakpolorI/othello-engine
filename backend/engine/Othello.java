@@ -1,131 +1,103 @@
-package ca.utoronto.utm.assignment1.othello;
-
-import org.w3c.dom.DOMImplementation;
-
-import javax.print.attribute.standard.MediaSize;
 import java.util.Random;
 
 /**
- * Capture an Othello game. This includes an OthelloBoard as well as knowledge
- * of how many moves have been made, whosTurn is next (OthelloBoard.P1 or
- * OthelloBoard.P2). It knows how to make a move using the board and can tell
- * you statistics about the game, such as how many tokens P1 has and how many
- * tokens P2 has. It knows who the winner of the game is, and when the game is
- * over.
- * 
- * See the following for a short, simple introduction.
- * https://www.youtube.com/watch?v=Ol3Id7xYsY4
- * 
- * @author arnold
- *
+ * Manages an Othello game session, tracking turns, move counts,
+ * and identifying the winner.
  */
 public class Othello {
-	public static final int DIMENSION = 8; // This is an 8x8 game
-	private char whosTurn = OthelloBoard.P1; // P1 moves first!
-	private int numMoves = 0;
+    public static final int DIMENSION = 8;
+    private char whosTurn = OthelloBoard.P1;
+    private int numMoves = 0;
     public OthelloBoard othelloBoard;
 
     public Othello() {
         othelloBoard = new OthelloBoard(DIMENSION);
     }
 
-	/**
-	 * return P1,P2 or EMPTY depending on who moves next.
-	 * 
-	 * @return P1, P2 or EMPTY
-	 */
-	public char getWhosTurn() { return whosTurn;}
-
-	/**
-	 * Attempt to make a move for P1 or P2 (depending on whos turn it is) at
-	 * position row, col. A side effect of this method is modification of whos turn
-	 * and the move count.
-	 * 
-	 * @param row
-	 * @param col
-	 * @return whether the move was successfully made.
-	 */
-	public boolean move(int row, int col) {
-        boolean result = othelloBoard.move(row, col, getWhosTurn());
-        if (result) {
-            numMoves += 1;
-            whosTurn = OthelloBoard.otherPlayer(getWhosTurn());
-        }
-        return result;
-	}
-
-	/**
-	 * 
-	 * @param player P1 or P2
-	 * @return the number of tokens for player on the board
-	 */
-	public int getCount(char player) {
-		return othelloBoard.getCount(player);
-	}
+    public char getWhosTurn() { return whosTurn; }
 
     /**
-     * Returns the total number of moves played in this game.
-     * @return the number of moves played.
+     * Makes a move for the current player. Updates turn and move count on success.
+     * Includes logic to handle the "Pass" rule (skipping a player with no moves).
      */
+    public boolean move(int row, int col) {
+        if (othelloBoard.move(row, col, whosTurn)) {
+            numMoves++;
+
+            // Determine who can move next
+            char opponent = OthelloBoard.otherPlayer(whosTurn);
+            char canMove = othelloBoard.hasMove();
+
+            // Othello Turn Logic:
+            // 1. If the opponent can move (BOTH or just Opponent), it's their turn.
+            // 2. If the opponent CANNOT move but the current player CAN, skip the opponent.
+            // 3. If neither can move, the game is over.
+            if (canMove == OthelloBoard.BOTH || canMove == opponent) {
+                whosTurn = opponent;
+            } else if (canMove == whosTurn) {
+                // Opponent skipped: whosTurn stays as is.
+                System.out.println(opponent + " has no moves and is skipped!");
+            } else {
+                // No moves left for anyone
+                whosTurn = OthelloBoard.EMPTY;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public int getCount(char player) {
+        return othelloBoard.getCount(player);
+    }
+
     public int getNumMoves() {
         return numMoves;
     }
 
     /**
-	 * Returns the winner of the game.
-	 * 
-	 * @return P1, P2 or EMPTY for no winner, or the game is not finished.
-	 */
-	public char getWinner() {
+     * Returns P1 or P2 if the game is over, otherwise EMPTY.
+     */
+    public char getWinner() {
         if (!isGameOver()) return OthelloBoard.EMPTY;
-        int player1Count = getCount(OthelloBoard.P1);
-        int player2Count = getCount(OthelloBoard.P2);
-        if (player1Count < player2Count) return OthelloBoard.P2;
-        if (player1Count > player2Count) return OthelloBoard.P1;
-        return OthelloBoard.EMPTY;
-	}
+        int p1 = getCount(OthelloBoard.P1);
+        int p2 = getCount(OthelloBoard.P2);
+        // Returns P1, P2, or EMPTY in case of a tie
+        return (p1 > p2) ? OthelloBoard.P1 : (p2 > p1) ? OthelloBoard.P2 : OthelloBoard.EMPTY;
+    }
 
-	/**
-	 * 
-	 * @return whether the game is over (no player can move next)
-	 */
-	public boolean isGameOver() {
+    public boolean isGameOver() {
         return othelloBoard.hasMove() == OthelloBoard.EMPTY;
     }
 
-	/**
-	 * 
-	 * @return a string representation of the board.
-	 */
-	public String getBoardString() {
-		return othelloBoard.toString();
-	}
-
-    public void switchTurn() {
-        whosTurn = OthelloBoard.otherPlayer(getWhosTurn());
+    public String getBoardString() {
+        return othelloBoard.toString();
     }
 
-	/**
-	 * run this to test the current class. We play a completely random game. DO NOT
-	 * MODIFY THIS!! See the assignment page for sample outputs from this.
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		
-		Random rand = new Random();
+    public void switchTurn() {
+        whosTurn = OthelloBoard.otherPlayer(whosTurn);
+    }
 
-		Othello o = new Othello();
-		System.out.println(o.getBoardString());
-		while (!o.isGameOver()) {
-			int row = rand.nextInt(8);
-			int col = rand.nextInt(8);
+    /**
+     * run this to test the current class. We play a completely random game.
+     */
+    public static void main(String[] args) {
+        Random rand = new Random();
+        Othello o = new Othello();
 
-			if (o.move(row, col)) {
-				System.out.println("makes move (" + row + "," + col + ")");
-				System.out.println(o.getBoardString() + o.getWhosTurn() + " moves next");
-			}
-		}
+        System.out.println(o.getBoardString());
+        while (!o.isGameOver()) {
+            // Using DIMENSION instead of hardcoded 8 for robustness
+            int row = rand.nextInt(DIMENSION);
+            int col = rand.nextInt(DIMENSION);
 
-	}
+            if (o.move(row, col)) {
+                System.out.println("makes move (" + row + "," + col + ")");
+                System.out.println(o.getBoardString() + o.getWhosTurn() + " moves next");
+            }
+        }
+
+        System.out.println("Game Over! Winner is: " + o.getWinner());
+        System.out.println("Final Score - P1: " + o.getCount(OthelloBoard.P1) +
+                " | P2: " + o.getCount(OthelloBoard.P2));
+    }
 }
