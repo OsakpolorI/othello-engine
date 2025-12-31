@@ -73,6 +73,10 @@ public class Othello {
         return othelloBoard.toString();
     }
 
+    public OthelloBoard getBoard() {
+        return othelloBoard;
+    }
+
     public void switchTurn() {
         whosTurn = OthelloBoard.otherPlayer(whosTurn);
     }
@@ -81,6 +85,7 @@ public class Othello {
      * run this to test the current class. We play a completely random game.
      */
     public static void main(String[] args) {
+        /*
         Random rand = new Random();
         Othello o = new Othello();
 
@@ -99,5 +104,14 @@ public class Othello {
         System.out.println("Game Over! Winner is: " + o.getWinner());
         System.out.println("Final Score - P1: " + o.getCount(OthelloBoard.P1) +
                 " | P2: " + o.getCount(OthelloBoard.P2));
+     */
     }
+
+    // Make new game
+    Othello o = new Othello();
+
+    // Make a move
+
+
+
 }

@@ -1,5 +1,5 @@
 /**
- * PlayerGreedy makes a move by considering all possible moves that the player
+ * GreedyStrategy makes a move by considering all possible moves that the player
  * can make. Each move leaves the player with a total number of tokens.
  * getMove() returns the first move which maximizes the number of
  * tokens owned by this player. In case of a tie, between two moves,
@@ -19,12 +19,12 @@
  */
 
 /**
- * The PlayerGreedy class represents a player that always chooses
+ * The GreedyStrategy class represents a strategy that always chooses
  * the move that flips the most opponent tokens.
  * It checks all possible moves and picks the one with the highest gain.
  */
 
-public class PlayerGreedy extends Player {
+public class GreedyStrategy extends Strategy {
 
     /**
      * Creates a new greedy player.
@@ -33,7 +33,7 @@ public class PlayerGreedy extends Player {
      * @param player the character representing the player (P1 or P2)
      */
 
-    public PlayerGreedy(Othello othello, char player) {
+    public GreedyStrategy(Othello othello, char player) {
         super(othello, player);
     }
 

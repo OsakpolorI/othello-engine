@@ -3,17 +3,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * TODO: Document this class and make minimal changes as necessary.
- * 
- * @author arnold
- *
- */
-
-/**
- * The PlayerHuman class represents a human player in the Othello game.
+ * The HumanStrategy class represents a human strategy in the Othello game.
  * It lets the player enter their move by typing a row and column.
  */
-public class PlayerHuman extends Player{
+public class HumanStrategy extends Strategy {
 	
 	private static final String INVALID_INPUT_MESSAGE = "Invalid number, please enter 1-8";
 	private static final String IO_ERROR_MESSAGE = "I/O Error";
@@ -25,7 +18,7 @@ public class PlayerHuman extends Player{
      * @param othello the current Othello game
      * @param player the character representing this player (P1 or P2)
      */
-	public PlayerHuman(Othello othello, char player) {
+	public HumanStrategy(Othello othello, char player) {
 		super(othello, player);
 	}
 
@@ -54,7 +47,7 @@ public class PlayerHuman extends Player{
 		while (true) {
 			try {
 				System.out.print(message);
-				String line = PlayerHuman.stdin.readLine();
+				String line = HumanStrategy.stdin.readLine();
 				move = Integer.parseInt(line);
 				if (lower <= move && move <= upper) {
 					return move;
