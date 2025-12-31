@@ -1,7 +1,11 @@
+package com.othello.backend.strategy;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.othello.backend.engine.Othello;
+import com.othello.backend.engine.Move;
 /**
  * The HumanStrategy class represents a human strategy in the Othello game.
  * It lets the player enter their move by typing a row and column.

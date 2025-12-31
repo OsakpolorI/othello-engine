@@ -1,3 +1,5 @@
+package com.othello.backend.engine;
+
 /**
  * Manages the Othello board state, coordinate validation, and piece flipping logic.
  */

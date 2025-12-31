@@ -1,3 +1,5 @@
+package com.othello.backend.strategy;
+
 /**
  * GreedyStrategy makes a move by considering all possible moves that the player
  * can make. Each move leaves the player with a total number of tokens.
@@ -17,6 +19,10 @@
  *
  *
  */
+
+import com.othello.backend.engine.Move;
+import com.othello.backend.engine.Othello;
+import com.othello.backend.engine.OthelloBoard;
 
 /**
  * The GreedyStrategy class represents a strategy that always chooses

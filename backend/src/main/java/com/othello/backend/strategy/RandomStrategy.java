@@ -1,6 +1,11 @@
+package com.othello.backend.strategy;
+
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.othello.backend.engine.Othello;
+import com.othello.backend.engine.Move;
+import com.othello.backend.engine.OthelloBoard;
 /**
  * The RandomStrategy class represents a strategy that makes random valid moves in Othello.
  * It finds all possible moves and picks one at random.

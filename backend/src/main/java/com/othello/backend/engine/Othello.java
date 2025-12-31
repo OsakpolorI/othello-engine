@@ -1,3 +1,5 @@
+package com.othello.backend.engine;
+
 import java.util.Random;
 
 /**
