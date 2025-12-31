@@ -22,6 +22,19 @@ public class OthelloBoard {
         board[mid][mid - 1] = board[mid - 1][mid] = P2;
     }
 
+    /**
+     * Create a new clone of an Othelloboard.
+     * @param other
+     */
+    public OthelloBoard(OthelloBoard other) {
+        this.dim = other.dim;
+        this.board = new char[dim][dim];
+
+        for (int r = 0; r < dim; r++) {
+            System.arraycopy(other.board[r], 0, this.board[r], 0, dim);
+        }
+    }
+
     public int getDimension() { return dim; }
 
     /**
@@ -116,10 +129,33 @@ public class OthelloBoard {
     }
 
     /**
+     * Checks if (row, col) is a valid move for player.
+     */
+    public boolean isValidMove(char player, Move move) {
+        int row = move.getRow();
+        int col = move.getCol();
+
+        if (get(row, col) != EMPTY) return false;
+        for (int[] d : directions) {
+            if (hasMove(row, col, d[0], d[1]) == player) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Executes a move for a player at (row, col) if valid, flipping all relevant pieces.
      * @return true if the move was successful.
      */
+
     public boolean move(int row, int col, char player) {
+        return move(player, new Move(row, col));
+    }
+
+    public boolean move(char player, Move move) {
+        int row = move.getRow();
+        int col = move.getCol();
         if (get(row, col) != EMPTY) return false;
         boolean moved = false;
         for (int[] d : directions) {

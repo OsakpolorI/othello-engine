@@ -20,30 +20,20 @@ public class Othello {
      * Makes a move for the current player. Updates turn and move count on success.
      * Includes logic to handle the "Pass" rule (skipping a player with no moves).
      */
-    public boolean move(int row, int col) {
-        if (othelloBoard.move(row, col, whosTurn)) {
-            numMoves++;
+    public MoveResult move(char player, Move move) {
+        boolean valid = othelloBoard.isValidMove(player, move);
+        if (!valid) return new MoveResult(false, whosTurn, othelloBoard, false);
 
-            // Determine who can move next
-            char opponent = OthelloBoard.otherPlayer(whosTurn);
-            char canMove = othelloBoard.hasMove();
+        othelloBoard.move(player, move);
+        numMoves++;
+        boolean gameOver = isGameOver();
+        char nextTurn = OthelloBoard.otherPlayer(whosTurn);
 
-            // Othello Turn Logic:
-            // 1. If the opponent can move (BOTH or just Opponent), it's their turn.
-            // 2. If the opponent CANNOT move but the current player CAN, skip the opponent.
-            // 3. If neither can move, the game is over.
-            if (canMove == OthelloBoard.BOTH || canMove == opponent) {
-                whosTurn = opponent;
-            } else if (canMove == whosTurn) {
-                // Opponent skipped: whosTurn stays as is.
-                System.out.println(opponent + " has no moves and is skipped!");
-            } else {
-                // No moves left for anyone
-                whosTurn = OthelloBoard.EMPTY;
-            }
-            return true;
+        if (!gameOver && othelloBoard.hasMove() == 'B' || othelloBoard.hasMove() == nextTurn) {
+            whosTurn = nextTurn;
         }
-        return false;
+
+        return new MoveResult(true, nextTurn, othelloBoard, gameOver);
     }
 
     public int getCount(char player) {
@@ -77,6 +67,14 @@ public class Othello {
         return othelloBoard;
     }
 
+    public void setBoard(OthelloBoard board) {
+        othelloBoard = board;
+    }
+
+    public void setTurn(char player) {
+        whosTurn = player;
+    }
+
     public void switchTurn() {
         whosTurn = OthelloBoard.otherPlayer(whosTurn);
     }
@@ -108,7 +106,7 @@ public class Othello {
     }
 
     // Make new game
-    Othello o = new Othello();
+    //Othello o = new Othello();
 
     // Make a move
 
