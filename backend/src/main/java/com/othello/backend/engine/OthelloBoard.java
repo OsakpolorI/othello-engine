@@ -1,5 +1,7 @@
 package com.othello.backend.engine;
 
+import lombok.Getter;
+
 /**
  * Manages the Othello board state, coordinate validation, and piece flipping logic.
  */
@@ -8,6 +10,7 @@ public class OthelloBoard {
     public static final char EMPTY = ' ', P1 = 'X', P2 = 'O', BOTH = 'B';
     public static final int[][] directions = {{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
     private int dim;
+    @Getter
     private char[][] board;
 
     /**
