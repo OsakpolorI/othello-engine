@@ -31,11 +31,13 @@ public class Othello {
         boolean gameOver = isGameOver();
         char nextTurn = OthelloBoard.otherPlayer(whosTurn);
 
-        if (!gameOver && othelloBoard.hasMove() == 'B' || othelloBoard.hasMove() == nextTurn) {
+        if (gameOver) return new MoveResult(true, ' ', othelloBoard, false);
+
+        if (othelloBoard.hasMove() == 'B' || othelloBoard.hasMove() == nextTurn) {
             whosTurn = nextTurn;
         }
 
-        return new MoveResult(true, nextTurn, othelloBoard, gameOver);
+        return new MoveResult(true, whosTurn, othelloBoard, false);
     }
 
     public int getCount(char player) {
