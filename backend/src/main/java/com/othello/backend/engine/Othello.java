@@ -31,7 +31,7 @@ public class Othello {
         boolean gameOver = isGameOver();
         char nextTurn = OthelloBoard.otherPlayer(whosTurn);
 
-        if (gameOver) return new MoveResult(true, ' ', othelloBoard, false);
+        if (gameOver) return new MoveResult(true, ' ', othelloBoard, true);
 
         if (othelloBoard.hasMove() == 'B' || othelloBoard.hasMove() == nextTurn) {
             whosTurn = nextTurn;
