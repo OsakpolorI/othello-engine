@@ -1,7 +1,7 @@
 package com.othello.backend.engine;
 
 import lombok.Getter;
-
+import java.util.Arrays;
 /**
  * Manages the Othello board state, coordinate validation, and piece flipping logic.
  */
@@ -38,6 +38,14 @@ public class OthelloBoard {
         for (int r = 0; r < dim; r++) {
             System.arraycopy(other.board[r], 0, this.board[r], 0, dim);
         }
+    }
+
+    public char[][] getBoardCopy() {
+        char[][] copy = new char[board.length][];
+        for (int i = 0; i < board.length; i++) {
+            copy[i] = Arrays.copyOf(board[i], board[i].length);
+        }
+        return copy;
     }
 
     public int getDimension() { return dim; }
