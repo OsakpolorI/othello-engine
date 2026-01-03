@@ -1,6 +1,7 @@
 package com.othello.backend.engine;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Manages an Othello game session, tracking turns, move counts,
@@ -24,20 +25,26 @@ public class Othello {
      */
     public MoveResult move(char player, Move move) {
         boolean valid = othelloBoard.isValidMove(player, move);
-        if (!valid) return new MoveResult(false, whosTurn, othelloBoard, false);
+        if (!valid) return new MoveResult(
+                false, whosTurn, othelloBoard, false,
+                new ArrayList<>(List.of(getCount(OthelloBoard.P1), getCount(OthelloBoard.P2))));
 
         othelloBoard.move(player, move);
         numMoves++;
         boolean gameOver = isGameOver();
         char nextTurn = OthelloBoard.otherPlayer(whosTurn);
 
-        if (gameOver) return new MoveResult(true, ' ', othelloBoard, true);
+        if (gameOver) return new MoveResult(
+                true, ' ', othelloBoard, true,
+                new ArrayList<>(List.of(getCount(OthelloBoard.P1), getCount(OthelloBoard.P2))));
 
         if (othelloBoard.hasMove() == 'B' || othelloBoard.hasMove() == nextTurn) {
             whosTurn = nextTurn;
         }
 
-        return new MoveResult(true, whosTurn, othelloBoard, false);
+        return new MoveResult(
+                true, whosTurn, othelloBoard, false,
+        new ArrayList<>(List.of(getCount(OthelloBoard.P1), getCount(OthelloBoard.P2))));
     }
 
     public int getCount(char player) {
